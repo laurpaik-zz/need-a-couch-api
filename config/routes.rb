@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
-  resources :profiles, only: [:create, :index]
+  resources :profiles, except: [:new, :edit]
 
   post '/sign-up' => 'users#signup'
   post '/sign-in' => 'users#signin'
