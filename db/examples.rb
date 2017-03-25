@@ -36,8 +36,13 @@ Profile.transaction do
   end
 end
 
-%w(somerville brooklyn portsmouth).each do |location|
-  next if Couchpost.exists? location: location
-  Couchpost.create!(location: location,
-                    profile: Profile.all.sample)
+Couchpost.transaction do
+  require 'date'
+  date_time = DateTime.now
+  %w(somerville brooklyn portsmouth).each do |location|
+    next if Couchpost.exists? location: location
+    Couchpost.create!(location: location,
+                      date_needed: date_time,
+                      profile: Profile.all.sample)
+  end
 end

@@ -4,6 +4,7 @@ class CreateCouchposts < ActiveRecord::Migration[5.0]
   def change
     create_table :couchposts do |t|
       t.string :location, null: false
+      t.date :date_needed, null: false
 
       t.timestamps
     end
