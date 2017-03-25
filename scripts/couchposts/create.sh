@@ -9,7 +9,8 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Token token=$TOKEN" \
   --data '{
     "couchpost": {
-      "location": "'"${LOCATION}"'"
+      "location": "'"${LOCATION}"'",
+      "profile_id": "'"${PROFILE_ID}"'"
     }
   }'
 

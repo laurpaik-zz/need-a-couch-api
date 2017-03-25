@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325182956) do
+ActiveRecord::Schema.define(version: 20170325220841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20170325182956) do
     t.string   "location",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "profile_id"
+    t.integer  "profile_id", null: false
     t.index ["profile_id"], name: "index_couchposts_on_profile_id", using: :btree
   end
 
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20170325182956) do
     t.date     "dob",        null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id",    null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -52,4 +54,5 @@ ActiveRecord::Schema.define(version: 20170325182956) do
 
   add_foreign_key "couchposts", "profiles"
   add_foreign_key "examples", "users"
+  add_foreign_key "profiles", "users"
 end

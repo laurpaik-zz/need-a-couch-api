@@ -6,6 +6,7 @@ class UsersController < ProtectedController
   def signup
     user = User.create(user_creds)
     if user.valid?
+      @profile = user.create_profile(profile_params)
       render json: user, status: :created
     else
       render json: user.errors, status: :bad_request
@@ -62,6 +63,10 @@ class UsersController < ProtectedController
   def user_creds
     params.require(:credentials)
           .permit(:email, :password, :password_confirmation)
+  end
+
+  def profile_params
+    params.require(:profile).permit(:given_name, :surname, :gender, :dob)
   end
 
   def pw_creds

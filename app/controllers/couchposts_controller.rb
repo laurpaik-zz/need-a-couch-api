@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class CouchpostsController < ApplicationController
-  before_action :set_couchpost, only: [:show, :update, :destroy]
+class CouchpostsController < OpenReadController
+  before_action :set_couchpost, only: [:update, :destroy]
 
   # GET /couchposts
   def index
@@ -12,12 +12,12 @@ class CouchpostsController < ApplicationController
 
   # GET /couchposts/1
   def show
-    render json: @couchpost
+    render json: Couchpost.find(params[:id])
   end
 
   # POST /couchposts
   def create
-    @couchpost = Couchpost.new(couchpost_params)
+    @couchpost = current_user.profile.couchposts.build(couchpost_params)
 
     if @couchpost.save
       render json: @couchpost, status: :created
@@ -29,7 +29,7 @@ class CouchpostsController < ApplicationController
   # PATCH/PUT /couchposts/1
   def update
     if @couchpost.update(couchpost_params)
-      render json: @couchpost
+      head :no_content
     else
       render json: @couchpost.errors, status: :unprocessable_entity
     end
@@ -38,11 +38,13 @@ class CouchpostsController < ApplicationController
   # DELETE /couchposts/1
   def destroy
     @couchpost.destroy
+
+    head :no_content
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_couchpost
-    @couchpost = Couchpost.find(params[:id])
+    @couchpost = current_user.profile.couchposts.find(params[:id])
   end
   private :set_couchpost
 
