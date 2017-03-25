@@ -20,7 +20,7 @@ class CouchpostsController < ApplicationController
     @couchpost = Couchpost.new(couchpost_params)
 
     if @couchpost.save
-      render json: @couchpost, status: :created, location: @couchpost
+      render json: @couchpost, status: :created
     else
       render json: @couchpost.errors, status: :unprocessable_entity
     end
