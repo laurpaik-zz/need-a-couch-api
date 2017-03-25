@@ -17,3 +17,17 @@
 #                password: 'abc123',
 #                password_confirmation: nil)
 # end
+
+%w(lauren emily nayoon cara chrissy wei yen ash).each do |name|
+  next if Profile.exists? given_name: name
+  Profile.create!(given_name: name,
+                  surname: 'kato',
+                  gender: 'f',
+                  dob: '1993-01-16')
+end
+
+%w(somerville brooklyn portsmouth).each do |location|
+  next if Couchpost.exists? location: location
+  Couchpost.create!(location: location,
+                    profile: Profile.all.sample)
+end

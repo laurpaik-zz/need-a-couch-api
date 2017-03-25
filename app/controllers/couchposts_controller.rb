@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CouchpostsController < ApplicationController
   before_action :set_couchpost, only: [:show, :update, :destroy]
 
