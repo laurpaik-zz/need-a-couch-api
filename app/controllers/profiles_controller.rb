@@ -16,15 +16,15 @@ class ProfilesController < OpenReadController
   end
 
   # POST /profiles
-  # def create
-  #   @profile = Profile.new(profile_params)
-  #
-  #   if @profile.save
-  #     render json: @profile, status: :created
-  #   else
-  #     render json: @profile.errors, status: :unprocessable_entity
-  #   end
-  # end
+  def create
+    @profile = current_user.build_profile(profile_params)
+
+    if @profile.save
+      render json: @profile, status: :created
+    else
+      render json: @profile.errors, status: :unprocessable_entity
+    end
+  end
 
   # PATCH/PUT /profiles/1
   def update
