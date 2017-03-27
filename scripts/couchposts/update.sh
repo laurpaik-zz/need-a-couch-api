@@ -10,7 +10,8 @@ curl "${API}${URL_PATH}" \
   --data '{
     "couchpost": {
       "location": "'"${LOCATION}"'",
-      "date_needed": "'"${DATE}"'"
+      "date_needed": "'"${DATE}"'",
+      "couch_found": "'"${COUCH_FOUND}"'"
     }
   }'
    #\

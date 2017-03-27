@@ -43,6 +43,7 @@ Couchpost.transaction do
     next if Couchpost.exists? location: location
     Couchpost.create!(location: location,
                       date_needed: date_time,
+                      couch_found: 'false',
                       profile: Profile.all.sample)
   end
 end
