@@ -3,10 +3,10 @@
 class CreateProfiles < ActiveRecord::Migration[5.0]
   def change
     create_table :profiles do |t|
-      t.string :given_name, null: false
-      t.string :surname, null: false
-      t.string :gender, null: false
-      t.date :dob, null: false
+      t.string :given_name
+      t.string :surname
+      t.string :gender
+      t.date :dob
 
       t.timestamps null: false
     end

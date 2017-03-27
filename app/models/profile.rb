@@ -3,9 +3,9 @@
 class Profile < ApplicationRecord
   has_many :couchposts
   belongs_to :user
-
-  validates :given_name, presence: true
-  validates :surname, presence: true
-  validates :gender, presence: true
-  validates :dob, presence: true
+  #
+  # validates :given_name
+  # validates :surname
+  # validates :gender
+  # validates :dob
 end
