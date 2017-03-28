@@ -50,7 +50,8 @@ class CouchpostsController < OpenReadController
 
   # Only allow a trusted parameter "white list" through.
   def couchpost_params
-    params.require(:couchpost).permit(:location, :date_needed, :couch_found)
+    params.require(:couchpost).permit(:location, :date_needed, :couch_found,
+                                      :profile_id)
   end
   private :couchpost_params
 end
