@@ -5,6 +5,5 @@ class Couchpost < ApplicationRecord
 
   validates :location, presence: true
   validates :date_needed, presence: true
-  validates :couch_found, presence: true
   validates :profile, presence: true
 end

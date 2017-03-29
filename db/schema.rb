@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 20170325220841) do
   enable_extension "plpgsql"
 
   create_table "couchposts", force: :cascade do |t|
-    t.string   "location",    null: false
-    t.date     "date_needed", null: false
-    t.string   "couch_found", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "profile_id",  null: false
+    t.string   "location",                    null: false
+    t.date     "date_needed",                 null: false
+    t.boolean  "couch_found", default: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "profile_id",                  null: false
     t.index ["profile_id"], name: "index_couchposts_on_profile_id", using: :btree
   end
 
