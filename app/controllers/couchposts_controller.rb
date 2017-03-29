@@ -5,7 +5,7 @@ class CouchpostsController < OpenReadController
 
   # GET /couchposts
   def index
-    @couchposts = Couchpost.all
+    @couchposts = Couchpost.order(date_needed: :desc, id: :desc)
 
     render json: @couchposts
   end
