@@ -21,7 +21,7 @@ User.transaction do
 end
 
 Profile.transaction do
-  %w(lauren emily nayoon cara chrissy wei yen ash).each do |name|
+  %w(Lauren Emily Nayoon Cara Chrissy Wei Yen Ash).each do |name|
     email = "#{name}@#{name}.com"
     user = User.where(email: email).first
     profile_params = {
@@ -39,7 +39,7 @@ end
 Couchpost.transaction do
   require 'date'
   date_time = DateTime.now
-  %w(somerville brooklyn portsmouth).each do |location|
+  %w(Somerville Brooklyn Portsmouth).each do |location|
     next if Couchpost.exists? location: location
     Couchpost.create!(location: location,
                       date_needed: date_time,
