@@ -11,7 +11,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 User.transaction do
-  %w(lauren emily nayoon cara chrissy wei yen ash).each do |name|
+  %w(Lauren Emily Nayoon Cara Chrissy Wei Yen Ash).each do |name|
     email = "#{name}@#{name}.com"
     next if User.exists? email: email
     User.create(email: email,
@@ -27,7 +27,7 @@ Profile.transaction do
     profile_params = {
       user_id: user.id,
       given_name: name,
-      surname: 'kato',
+      surname: 'Kato',
       gender: 'f',
       dob: '1993-01-16'
     }
