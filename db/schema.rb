@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20170325220841) do
 
   create_table "couchposts", force: :cascade do |t|
     t.string   "location",                    null: false
-    t.date     "date_needed",                 null: false
+    t.datetime "date_needed",                 null: false
     t.boolean  "couch_found", default: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20170325220841) do
     t.string   "given_name"
     t.string   "surname"
     t.string   "gender"
-    t.date     "dob"
+    t.datetime "dob"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "user_id",    null: false

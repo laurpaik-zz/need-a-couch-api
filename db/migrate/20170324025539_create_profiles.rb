@@ -6,7 +6,7 @@ class CreateProfiles < ActiveRecord::Migration[5.0]
       t.string :given_name
       t.string :surname
       t.string :gender
-      t.date :dob
+      t.datetime :dob
 
       t.timestamps null: false
     end
