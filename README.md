@@ -9,6 +9,29 @@ An API to store data on where users need to crash for a night
 ### [ERD](https://goo.gl/photos/qyeshqtNUGRyE6Rh6)
 ### [ERD Reach Goal](https://goo.gl/photos/nc1WiSgVnCeU7NfcA)
 
+## Development
+#### Dependencies
+Install with `bundle install`.
+
+-   [`rails-api`](https://github.com/rails-api/rails-api)
+-   [`rails`](https://github.com/rails/rails)
+-   [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
+-   [`ruby`](https://www.ruby-lang.org/en/)
+-   [`postgres`](http://www.postgresql.org)
+
+#### Installation
+
+1.  Fork and clone this repository.
+1.  Install dependencies with `bundle install`.
+1.  Create a `.env` for sensitive settings (`touch .env`).
+1.  Generate new `development` and `test` secrets (`bundle exec rake secret)`.)
+1.  Store them in `.env` with keys `SECRET_KEY_BASE_<DEVELOPMENT|TEST>` resepctively.
+1.  Run the API server with `bin/rails server` or `bundle exec rake server`.
+
+In order to make requests from your deployed client application, you will need
+to set `CLIENT_ORIGIN` in the environment (e.g. `heroku config:set
+CLIENT_ORIGIN=https://<github-username>.github.io`).
+
 ## API End-Points
 
 | Verb   | URI Pattern            | Controller#Action |
@@ -30,18 +53,8 @@ An API to store data on where users need to crash for a night
 
 #### POST /sign-up
 
-The `create` action expects a *POST* of `credentials` and `athlete` information identifying a new user and athlete-profile to create, in this case using `getFormFields`:
+The `create` action expects a *POST* of `credentials` and `profile` information identifying a new user and profile to create:
 
-```html
-<form>
-  <input name="credentials[email]" type="text" value="la@example.email">
-  <input name="credentials[password]" type="password" value="an example password">
-  <input name="credentials[password_confirmation]" type="password" value="an example password">
-  <input name="athlete[given_name]" type="text" value="lauren">
-  <input name="athlete[surname]" type="text" value="p">
-  <input name="athlete[date_of_birth]" type="date" value="1990-01-01">
-</form>
-```
 Request:
 
 ```sh
@@ -55,10 +68,11 @@ curl http://localhost:4741/sign-up \
       "password": "'"${PASSWORD}"'",
       "password_confirmation": "'"${PASSWORD}"'"
     },
-    "athlete": {
+    "profile": {
       "given_name": "'"${GIVEN_NAME}"'",
       "surname": "'"${SURNAME}"'",
-      "date_of_birth": "'"${DOB}"'"
+      "gender": "'"${GENDER}"'",
+      "dob": "'"${DOB}"'"
     }
   }'
 ```
@@ -232,7 +246,7 @@ Content-Type: application/json; charset=utf-8
   }
 }
 ```
-
+<!--
 ### Profile Actions
 
 All profile action requests must include a valid HTTP header `Authorization: Token token=<token>` or they will be rejected with a status of 401 Unauthorized.
@@ -241,7 +255,7 @@ All profile action requests must include a valid HTTP header `Authorization: Tok
 
 Request:
 ```sh
-curl http://localhost:4741/athletes \
+curl http://localhost:4741/profiles \
   --include \
   --request PATCH \
   --header "Content-Type: application/json" \
@@ -266,11 +280,11 @@ Response:
 HTTP/1.1 204 No Content
 ```
 
-The `update` action is a *PATCH* that updates the athlete who has authorization. It expects a PATCH of `profile` specifying `given_name`, `surname`, `gender`, and `dob`.
+The `update` action is a *PATCH* that updates the profile who has authorization. It expects a PATCH of `profile` specifying `given_name`, `surname`, `gender`, and `dob`.
 
 If the request is successful, the response will have an HTTP status of 204 No Content.
 
-If the request is unsuccessful, the response will have an HTTP status of 400 Bad Request.
+If the request is unsuccessful, the response will have an HTTP status of 400 Bad Request. -->
 
 ### Couchpost Actions
 
@@ -299,23 +313,18 @@ curl http://localhost:4741/couchposts \
 ```
 
 ```sh
-ID=1 TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' LOCATION='Boston' DATE_NEEDED='2017-03-31' COUCH_FOUND='no' PROFILE_ID=1 sh scripts/athletes/update.sh
+ID=1 TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' LOCATION='Boston' DATE_NEEDED='2017-03-31' COUCH_FOUND='no' PROFILE_ID=1 sh scripts/profiles/update.sh
 ```
 
-The response will have an HTTP status of 201 Created, and the body will contain JSON of the created log:
+The response will have an HTTP status of 201 Created, and the body will contain JSON of the created couchpost:
 ```json
 {
   "id":7,
   "location":"Boston",
   "date_needed":"2017-03-31",
   "couch_found":"no",
-  "profile":{
-    "id":1,
-    "given_name":"lauren",
-    "surname":"paik",
-    "date_of_birth":"1993-01-16",
-    "editable":true,
-  }
+  "profile": 1,
+  "editable": true
 }
 ```
 
@@ -338,7 +347,26 @@ sh scripts/couchposts/index.sh
 The response body will contain JSON containing an array of couchposts, e.g.:
 
 ```json
-
+{
+  "couchposts":[
+    {
+      "id":8,
+      "location":"Back Bay",
+      "date_needed":"2017-03-31T00:00:00.000Z",
+      "couch_found":false,
+      "profile":1,
+      "editable":false
+    },
+    {
+      "id":7,
+      "location":"Somerville",
+      "date_needed":"2017-03-31T00:00:00.000Z",
+      "couch_found":true,
+      "profile":1,
+      "editable":false
+    }
+  ]
+}
 ```
 
 If a `user` is logged in, then `index` will return `editable` as true for that user's profile.
@@ -362,7 +390,16 @@ TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5
 
 The response body will contain a JSON object of that couchpost, e.g.:
 ```json
-
+{
+  "couchpost":{
+    "id":5,
+    "location":"GA",
+    "date_needed":"2017-03-31T00:00:00.000Z",
+    "couch_found":false,
+    "profile":1,
+    "editable":true
+  }
+}
 ```
 
 #### update
@@ -413,10 +450,17 @@ If the request is successful, the response will have an HTTP status of 204 No Co
 If the request is unsuccessful, the response will have an HTTP status of 400 Bad Request.
 
 ### My Struggles and Lessons Learned
-
+I learned a lot about serializers in this project. I had the most
+difficulty connecting the back-end to Ember, so that was the greatest
+challenge for me. I basically learned that the serializer is like the
+translator between the front-end and the back-end, but I have to point
+it in the right direction so the data flows the way I need it to.
 
 ### Future Goals
-
+I really want to implement friendships later down the line. I
+understand I'm going to want to use a recursive relationship for
+profiles, and I'm excited to move forward and learn more about
+implementing that kind of relationship.
 
 ### Built With:
 - Ruby
