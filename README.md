@@ -24,7 +24,7 @@ Install with `bundle install`.
 1.  Fork and clone this repository.
 1.  Install dependencies with `bundle install`.
 1.  Create a `.env` for sensitive settings (`touch .env`).
-1.  Generate new `development` and `test` secrets (`bundle exec rake secret)`.)
+1.  Generate new `development` and `test` secrets (`bundle exec rake secret`).
 1.  Store them in `.env` with keys `SECRET_KEY_BASE_<DEVELOPMENT|TEST>` resepctively.
 1.  Run the API server with `bin/rails server` or `bundle exec rake server`.
 
@@ -40,7 +40,8 @@ CLIENT_ORIGIN=https://<github-username>.github.io`).
 | POST   | `/sign-in`             | `users#signin`    |
 | PATCH  | `/change-password/:id` | `users#changepw`  |
 | DELETE | `/sign-out/:id`        | `users#signout`   |
-| PATCH  | `/profiles/:id` | `profiles#update`  |
+| GET  | `/profiles` | `profiles#index`  |
+| GET | `/profiles/:id`        | `profiles#show`   |
 | POST  | `/couchposts` | `couchposts#create`  |
 | GET | `/couchposts`        | `couchposts#index`   |
 | GET   | `/couchposts/:id`             | `couchposts#show`    |
@@ -246,11 +247,85 @@ Content-Type: application/json; charset=utf-8
   }
 }
 ```
-<!--
+
 ### Profile Actions
 
 All profile action requests must include a valid HTTP header `Authorization: Token token=<token>` or they will be rejected with a status of 401 Unauthorized.
+#### index
 
+The `index` action is a *GET* that retrieves all profiles.
+
+Request:
+
+```sh
+curl http://localhost:4741/profiles \
+  --include \
+  --request GET \
+  --header "Authorization: Token token=$TOKEN"
+```
+
+```sh
+TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' sh scripts/profiles/index.sh
+```
+
+The response body will contain JSON containing an array of profiles, e.g.:
+
+```json
+{
+  "profiles":[
+    {
+      "id":1,
+      "given_name":"Lauren",
+      "surname":"Kato",
+      "gender":"f",
+      "dob":"1993-01-16T00:00:00.000Z",
+      "editable":true
+    },
+    {
+      "id":2,
+      "given_name":"Emily",
+      "surname":"Kato",
+      "gender":"f",
+      "dob":"1993-01-16T00:00:00.000Z",
+      "editable":false
+    }
+  ]
+}
+```
+
+If a `user` is logged in, then `index` will return `editable` as true for that user's profile.
+
+#### show
+
+The `show` action is a *GET* that retrieves a given couchpost.
+
+Request:
+
+```sh
+curl http://localhost:4741/profiles/$ID \
+  --include \
+  --request GET \
+  --header "Authorization: Token token=$TOKEN"
+```
+
+```sh
+TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' ID=5 sh scripts/couchposts/show.sh
+```
+
+The response body will contain a JSON object of that couchpost, e.g.:
+```json
+{
+  "profile":{
+    "id":5,
+    "given_name":"Chrissy",
+    "surname":"Kato",
+    "gender":"f",
+    "dob":"1993-01-16T00:00:00.000Z",
+    "editable":false
+  }
+}
+```
+<!--
 #### update
 
 Request:
@@ -385,7 +460,7 @@ curl http://localhost:4741/couchposts/$ID \
 ```
 
 ```sh
-TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' ID=1 sh scripts/couchposts/show.sh
+TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' ID=5 sh scripts/couchposts/show.sh
 ```
 
 The response body will contain a JSON object of that couchpost, e.g.:
