@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
   resources :couchposts, except: [:new, :edit]
-  resources :profiles, except: [:new, :edit]
+  resources :profiles, except: [:new, :edit, :destroy]
 
   post '/sign-up' => 'users#signup'
   post '/sign-in' => 'users#signin'
