@@ -15,14 +15,14 @@ class ProfilesController < OpenReadController
     render json: Profile.find(params[:id])
   end
 
-  # # PATCH/PUT /profiles/1
-  # def update
-  #   if @profile.update(profile_params)
-  #     head :no_content
-  #   else
-  #     render json: @profile.errors, status: :unprocessable_entity
-  #   end
-  # end
+  # PATCH/PUT /profiles/1
+  def update
+    if @profile.update(profile_params)
+      head :no_content
+    else
+      render json: @profile.errors, status: :unprocessable_entity
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_profile

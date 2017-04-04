@@ -42,6 +42,7 @@ CLIENT_ORIGIN=https://<github-username>.github.io`).
 | DELETE | `/sign-out/:id`        | `users#signout`   |
 | GET  | `/profiles` | `profiles#index`  |
 | GET | `/profiles/:id`        | `profiles#show`   |
+| PATCH | `/profiles/:id`        | `profiles#update`   |
 | POST  | `/couchposts` | `couchposts#create`  |
 | GET | `/couchposts`        | `couchposts#index`   |
 | GET   | `/couchposts/:id`             | `couchposts#show`    |
@@ -325,7 +326,7 @@ The response body will contain a JSON object of that couchpost, e.g.:
   }
 }
 ```
-<!--
+
 #### update
 
 Request:
@@ -346,7 +347,7 @@ curl http://localhost:4741/profiles \
 ```
 
 ```sh
-ID=1 TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' ID=1 GIVEN_NAME='Lauren' SURNAME='McFace' GENDER='f' DOB='1993-01-01' sh scripts/profiles/update.sh
+TOKEN='BAhJIiVlZDIwZTMzMzQzODg5NTBmYjZlNjRlZDZlNzYxYzU2ZAY6BkVG--7e7f77f974edcf5e4887b56918f34cd9fe293b9f' ID=1 GIVEN_NAME='Lauren' SURNAME='McFace' GENDER='f' DOB='1993-01-01' sh scripts/profiles/update.sh
 ```
 
 Response:
@@ -359,7 +360,7 @@ The `update` action is a *PATCH* that updates the profile who has authorization.
 
 If the request is successful, the response will have an HTTP status of 204 No Content.
 
-If the request is unsuccessful, the response will have an HTTP status of 400 Bad Request. -->
+If the request is unsuccessful, the response will have an HTTP status of 400 Bad Request.
 
 ### Couchpost Actions
 
