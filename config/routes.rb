@@ -1,5 +1,7 @@
 # frozen_string_literal: true
+
 Rails.application.routes.draw do
+  resources :friendships, except: [:new, :edit, :update]
   resources :couchposts, except: [:new, :edit]
   resources :profiles, except: [:new, :edit, :destroy]
 
