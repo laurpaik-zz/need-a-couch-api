@@ -12,7 +12,7 @@ class FriendshipsController < OpenReadController
 
   # GET /friendships/1
   def show
-    render json: Friendship.find(params[:id])
+    render json: Friendship.where(profile_id: current_user.profile.id)
   end
 
   # POST /friendships
